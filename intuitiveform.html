@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    #submitBtn {
+      cursor: not-allowed;
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      transition: transform 0.3s;
+      position: absolute;
+    }
+
+    #passwordStrength {
+      margin-top: 10px;
+    }
+
+    .strong {
+      color: green;
+    }
+
+    .weak {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<form id="loginForm">
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" oninput="checkPasswordStrength()">
+  <div id="passwordStrength"></div>
+  <button id="submitBtn" type="button" onclick="submitForm()" disabled>Submit</button>
+</form>
+
+<script>
+  function checkPasswordStrength() {
+    var password = document.getElementById('password').value;
+    var strengthText = document.getElementById('passwordStrength');
+    var submitBtn = document.getElementById('submitBtn');
+
+    // Add your password strength criteria here
+    var strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (strongRegex.test(password)) {
+      strengthText.textContent = 'Password strength: Strong';
+      strengthText.className = 'strong';
+      submitBtn.disabled = false;
+      submitBtn.style.cursor = 'pointer';
+    } else {
+      strengthText.textContent = 'Password strength: Weak';
+      strengthText.className = 'weak';
+      submitBtn.disabled = true;
+      submitBtn.style.cursor = 'not-allowed';
+    }
+  }
+
+  function submitForm() {
+    alert('Form submitted!');
+  }
+
+  // Make the button move away from the cursor on hover
+  document.getElementById('submitBtn').addEventListener('mousemove', function(e) {
+    var btn = document.getElementById('submitBtn');
+    var rect = btn.getBoundingClientRect();
+
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    var angle = Math.atan2(y, x);
+    var distance = 50;
+
+    var newX = distance * Math.cos(angle);
+    var newY = distance * Math.sin(angle);
+
+    btn.style.transform = 'translate(' + newX + 'px,' + newY + 'px)';
+  });
+</script>
+
+</body>
+</html>
